@@ -183,7 +183,7 @@ def update_student():
     
     # CHECK DUPLICATE ID
     for student in students:
-        if student["id"] == sid:
+        if student["id"] == id:
             messagebox.showerror("Duplicate Error", "Student ID already exists!")
             return
 
