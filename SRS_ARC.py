@@ -63,10 +63,7 @@ college_programs = {
     ],
 
     "Senior High School": [
-        "STEM",
-        "ABM",
-        "HUMSS",
-        "TVL"
+        "STEM"
     ]
 }
 
@@ -220,22 +217,50 @@ def delete_student():
 
     if not selected:
 
-        messagebox.showerror("Error", "Select a student first!")
+        messagebox.showerror(
+            "Error",
+            "Select a student first!"
+        )
+
         return
 
     values = student_list.item(selected, "values")
 
     sid = values[0]
+    student_name = values[1]
+
+    # ======================================
+    # REMOVE STUDENT RECORD
+    # ======================================
 
     for student in students:
 
         if student["id"] == sid:
+
             students.remove(student)
             break
 
+    # ======================================
+    # REMOVE FROM ENROLLMENT QUEUE
+    # ======================================
+
+    if student_name in enrollment_queue:
+
+        enrollment_queue.remove(student_name)
+
+    # UPDATE DISPLAY
     display_students(students)
+
+    # UPDATE QUEUE DISPLAY
+    update_queue()
+
+    # SAVE FILE
     save_to_file()
-    messagebox.showinfo("Deleted", "Student deleted!")
+
+    messagebox.showinfo(
+        "Deleted",
+        "Student deleted successfully!"
+    )
 
 # SORT STUDENTS
 def sort_students():
