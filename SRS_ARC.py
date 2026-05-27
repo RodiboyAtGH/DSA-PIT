@@ -498,7 +498,6 @@ logo_label = tk.Label(
     image=photo,
     bg="#FAE251"
 )
-
 logo_label.pack(pady=15)
 
 # LOGIN BOX
