@@ -132,7 +132,6 @@ def add_student():
     year = year_combo.get()
 
     if sid == "" or name == "" or college == "" or course == "" or year == "":
-
         messagebox.showerror("Error", "Complete all fields!")
         return
 
@@ -181,6 +180,12 @@ def update_student():
 
         messagebox.showerror("Error", "Select a student first!")
         return
+    
+    # CHECK DUPLICATE ID
+    for student in students:
+        if student["id"] == sid:
+            messagebox.showerror("Duplicate Error", "Student ID already exists!")
+            return
 
     values = student_list.item(selected, "values")
 
@@ -331,26 +336,56 @@ def open_main_system():
     root.geometry("1200x700")
     
     # main window background
-    root.configure(bg="navy")
+    root.configure(bg="#111844")
 
-    # INPUT FRAME (Set background to match root)
-    input_frame = tk.Frame(root, bg="navy")
+    # INPUT FRAME 
+    input_frame = tk.Frame(root, bg="#111844")
     input_frame.pack(pady=10)
 
+    student_info_frame = tk.Frame(
+        root,
+        bg="#AEADA6"
+    )
+    student_info_frame.pack(pady=10)
+    student_info_frame.pack_propagate(False)
+
     # STUDENT ID
-    tk.Label(input_frame, text="Student ID", bg="navy", fg="white").grid(row=0, column=0)
-    id_entry = tk.Entry(input_frame, width=50, bg="white")
+    tk.Label(
+        student_info_frame, 
+        text="Student ID", 
+        bg="#AEADA6", 
+        fg="black"
+    ).grid(row=0, column=0)
+
+    id_entry = tk.Entry(
+        student_info_frame, 
+        width=50, 
+        bg="white")
     id_entry.grid(row=0, column=1)
 
     # NAME
-    tk.Label(input_frame, text="Name", bg="navy", fg="white").grid(row=1, column=0)
-    name_entry = tk.Entry(input_frame, width=50, bg="white")
+    tk.Label(student_info_frame, 
+        text="Name", 
+        bg="#AEADA6", 
+        fg="black"
+    ).grid(row=1, column=0)
+
+    name_entry = tk.Entry( 
+        student_info_frame, 
+        width=50, 
+        bg="white")
     name_entry.grid(row=1, column=1)
 
     # COLLEGE
-    tk.Label(input_frame, text="College", bg="navy", fg="white").grid(row=2, column=0)
+    tk.Label(
+        student_info_frame, 
+        text="College", 
+        bg="#AEADA6", 
+        fg="black"
+    ).grid(row=2, column=0)
+
     college_combo = ttk.Combobox(
-        input_frame,
+        student_info_frame,
         width=47,
         values=list(college_programs.keys())
     )
@@ -358,14 +393,26 @@ def open_main_system():
     college_combo.bind("<<ComboboxSelected>>", update_programs)
 
     # PROGRAM
-    tk.Label(input_frame, text="Program", bg="navy", fg="white").grid(row=3, column=0)
-    program_combo = ttk.Combobox(input_frame, width=47)
+    tk.Label(
+        student_info_frame, 
+        text="Program", 
+        bg="#AEADA6", 
+        fg="black"
+    ).grid(row=3, column=0)
+
+    program_combo = ttk.Combobox(student_info_frame, width=47)
     program_combo.grid(row=3, column=1)
 
     # YEAR LEVEL
-    tk.Label(input_frame, text="Year Level", bg="navy", fg="white").grid(row=4, column=0)
+    tk.Label(
+        student_info_frame, 
+        text="Year Level", 
+        bg="#AEADA6", 
+        fg="black"
+    ).grid(row=4, column=0)
+
     year_combo = ttk.Combobox(
-        input_frame,
+        student_info_frame,
         width=47,
         values=[
             "1st Year",
@@ -377,15 +424,15 @@ def open_main_system():
     year_combo.grid(row=4, column=1)
     
     # BUTTON FRAME
-    button_frame = tk.Frame(root, bg="navy")
+    button_frame = tk.Frame(root, bg="#111844")
     button_frame.pack(pady=10)
 
-    # BUTTONS (Set background to gold)
+    # BUTTONS
     tk.Button(
         button_frame,
         text="Add Student",
         width=15,
-        bg="gold",
+        bg="#FAE251",
         fg="black",
         command=add_student
     ).grid(row=0, column=0, padx=5)
@@ -394,7 +441,7 @@ def open_main_system():
         button_frame,
         text="Update Student",
         width=15,
-        bg="gold",
+        bg="#FAE251",
         fg="black",
         command=update_student
     ).grid(row=0, column=1, padx=5)
@@ -403,7 +450,7 @@ def open_main_system():
         button_frame,
         text="Delete Student",
         width=15,
-        bg="gold",
+        bg="#FAE251",
         fg="black",
         command=delete_student
     ).grid(row=0, column=2, padx=5)
@@ -412,16 +459,16 @@ def open_main_system():
         button_frame,
         text="Sort A-Z",
         width=15,
-        bg="gold",
+        bg="#FAE251",
         fg="black",
         command=sort_students
     ).grid(row=0, column=3, padx=5)
 
     # SEARCH FRAME
-    search_frame = tk.Frame(root, bg="navy")
+    search_frame = tk.Frame(root, bg="#111844")
     search_frame.pack(pady=10)
 
-    tk.Label(search_frame, text="Search Name", bg="navy", fg="white").pack(side=tk.LEFT)
+    tk.Label(search_frame, text="Search Name", bg="#111844", fg="white").pack(side=tk.LEFT)
 
     search_entry = tk.Entry(search_frame, width=40, bg="white")
     search_entry.pack(side=tk.LEFT)
@@ -434,7 +481,7 @@ def open_main_system():
         command=search_student
     ).pack(side=tk.LEFT, padx=5)
 
-    # TABLE (Treeview inherently uses white for data rows)
+    # TABLE 
     columns = (
         "ID",
         "Name",
@@ -458,13 +505,13 @@ def open_main_system():
     student_list.bind("<ButtonRelease-1>", select_record)
 
     # QUEUE SYSTEM FRAME
-    queue_frame = tk.Frame(root, bg="navy")
+    queue_frame = tk.Frame(root, bg="#111844")
     queue_frame.pack(pady=10)
 
     tk.Label(
         queue_frame,
         text="Enrollment Queue",
-        bg="navy",
+        bg="#111844",
         fg="white"
     ).pack()
 
@@ -474,7 +521,7 @@ def open_main_system():
     tk.Button(
         queue_frame,
         text="Serve Student",
-        bg="gold",
+        bg="#FAE251",
         fg="black",
         command=serve_student
     ).pack(pady=5)
